@@ -4,6 +4,8 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+env/
+ENV/
 
 # Build artifacts
 build/
@@ -17,3 +19,18 @@ runs/
 # Editor files
 .vscode/
 .idea/
+
+# Environment / Credentials
+.env
+.env.*
+*.env
+
+# Local Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+

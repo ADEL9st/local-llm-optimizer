@@ -1,126 +1,154 @@
 # Local LLM Performance Doctor
 
-Local LLM Performance Doctor benchmarks local LLM runs, captures CPU/RAM/GPU/VRAM metrics, and explains bottlenecks with diagnosis and advisor reports.
+> ⚠️ **Early development.** Ollama backend is functional. LM Studio and OpenAI-compatible backends are experimental — behavior may be unstable or incomplete.
 
-v0.2.0 adds a rule-grounded Advisor Agent.
+> Unlike tools that only check hardware compatibility before running a model, **Local LLM Performance Doctor monitors your system during inference** and tells you exactly what's bottlenecking your performance.
 
-The agent explains diagnosis results and gives prioritized recommendations.
-It does not modify system settings.
+Benchmarks local LLM runs, captures CPU / RAM / GPU / VRAM metrics in real time, and explains bottlenecks with diagnosis and advisor reports.
 
-v0.2.0 kural-tabanlı Advisor Agent ekler.
+Supports **Ollama**, **LM Studio**, and any **OpenAI-compatible** backend.
 
-Agent teşhis sonuçlarını açıklar ve öncelikli öneriler verir.
-Sistem ayarlarını değiştirmez.
+---
 
-## Kurulum
+## Features
 
-```powershell
+- Real-time CPU, RAM, GPU utilization and VRAM tracking during inference
+- Automatic bottleneck diagnosis (CPU-bound, GPU idle, VRAM pressure, etc.)
+- Rule-grounded Advisor Agent with prioritized recommendations
+- TR / EN language support
+- Timestamped run output: `run.json`, `metrics.csv`, `report.md`
+
+---
+
+## Installation
+
+```bash
 pip install -e .
 ```
 
-Geliştirme ve test için:
+For development and testing:
 
-```powershell
+```bash
 pip install -e ".[dev]"
 ```
 
-## Kullanım
+---
 
-Ollama:
+## Usage
 
-```powershell
-doctor run --backend ollama --model llama3:latest --lang tr --prompt "Local LLM performansı nasıl ölçülür? 8 maddede açıkla."
+**Ollama:**
+
+```bash
+doctor run --backend ollama --model llama3:latest --lang en --prompt "Explain local LLM performance in 5 steps."
 ```
 
-LM Studio:
+**LM Studio:**
 
-```powershell
-doctor run --backend lmstudio --model "model-id" --lang tr --max-tokens 512
+```bash
+doctor run --backend lmstudio --model "model-id" --lang en --max-tokens 512
 ```
 
-OpenAI-compatible:
+**OpenAI-compatible:**
 
-```powershell
-doctor run --backend openai-compatible --base-url http://localhost:1234/v1 --model "model-id" --lang tr
+```bash
+doctor run --backend openai-compatible --base-url http://localhost:1234/v1 --model "model-id" --lang en
 ```
 
-## Advisor Config
+---
 
-`run.json` içinde advisor ayarı nested olarak saklanır:
+## Advisor Configuration
+
+Stored in `run.json` under the `advisor` key:
 
 ```yaml
 advisor:
   enabled: true
   mode: deterministic
-  language: tr
+  language: en   # en or tr
 ```
 
-## Testler
+---
 
-Tüm testleri çalıştır:
+## Output
 
-```powershell
+Each run produces a timestamped folder under `runs/`:
+
+```
+runs/
+└── 2025-05-24_13-45-00/
+    ├── run.json
+    ├── metrics.csv
+    └── report.md
+```
+
+---
+
+## Sample Output
+
+```
+=== Local LLM Performance Doctor Report ===
+Model   : llama3:latest
+Backend : ollama
+Duration: 12.4s
+Samples : 12
+Status  : Success
+
+--- Diagnosis ---
+[WARNING] GPU appears to be underutilized
+  Average and peak GPU usage is low. Model may be running on CPU
+  or the workload is not reaching the GPU.
+
+--- Advisor Agent ---
+Primary issue: GPU may not be in use.
+This run suggests the model did not fully reach the GPU path during inference.
+
+Evidence:
+- Average GPU utilization: 4.0%
+- Peak VRAM usage reached only 4.2% of available VRAM.
+
+Prioritized Recommendations:
+1. Check GPU acceleration settings in Ollama / LM Studio.
+2. Verify NVIDIA driver and CUDA installation.
+3. Re-run the same benchmark with GPU acceleration confirmed active.
+```
+
+---
+
+## Running Tests
+
+```bash
 python -m pytest
 ```
 
-Sessiz çıktı için:
+Quiet output:
 
-```powershell
+```bash
 python -m pytest -q
 ```
 
-## Çıktılar
+---
 
-Her koşu `runs/` altında zaman damgalı bir klasör üretir:
+## Changelog
 
-- `run.json`
-- `metrics.csv`
-- `report.md`
-
-## Sample Run Output
-
-```text
-=== Local LLM Performance Doctor Raporu ===
-Model: mock-model
-Backend: ollama
-Süre: 0.25s
-Örnek sayısı: 1
-Durum: Başarılı
-
---- Teşhisler ---
-[WARNING] GPU düşük kullanımda görünüyor
-  GPU ortalaması ve zirvesi düşük. Model CPU'da çalışıyor veya iş yükü GPU'ya gitmiyor olabilir.
-
---- Advisor Agent ---
-En önemli sorun: GPU kullanılmıyor olabilir.
-Bu koşu, inference sırasında modelin GPU yoluna tam olarak ulaşmadığını düşündürüyor.
-Kanıt:
-- Ortalama GPU kullanımı %4.0.
-- Tepe VRAM kullanımı mevcut VRAM'in sadece %4.2 seviyesinde kaldı.
-Öncelikli Öneriler:
-1. Ollama / LM Studio GPU acceleration ayarını kontrol et.
-2. NVIDIA driver / CUDA durumunu kontrol et.
-3. Aynı benchmark'ı GPU aktifken tekrar çalıştır.
-```
-
-## v0.2.0 - Advisor Agent MVP
-
+### v0.2.0
 - Added rule-grounded Advisor Agent
 - Added prioritized recommendations
-- Added TR/EN advisor output
-- Integrated advisor output into terminal/markdown reports
-- Advisor does not modify runtime/system settings
-
-## Önceki Sürüm Notları
+- Added TR / EN advisor output
+- Integrated advisor into terminal and markdown reports
+- Advisor does not modify runtime or system settings
 
 ### v0.1.2
-
-- LM Studio `base_url` handling düzeltildi; `/v1` eksikse otomatik tamamlanır.
-- README örnekleri netleştirildi.
-- Sample run output eklendi.
+- Fixed LM Studio `base_url` handling; `/v1` appended automatically if missing
+- Clarified README examples
+- Added sample run output
 
 ### v0.1.1
+- Improved Windows NVIDIA collector reliability
+- Better error messages when Ollama is not running
+- Improved markdown report formatting
 
-- Windows NVIDIA collector daha dayanıklı hale getirildi.
-- Ollama çalışmıyorken daha anlaşılır hata mesajları eklendi.
-- Markdown rapor formatı iyileştirildi.
+---
+
+## License
+
+AGPL-3.0 — see [LICENSE](LICENSE)

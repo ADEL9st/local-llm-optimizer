@@ -1,0 +1,198 @@
+{
+  "report_title": "Local LLM Performance Doctor Report",
+  "messages": {
+    "starting": "Doctor benchmark is starting..."
+  },
+  "labels": {
+    "advisor": "Advisor Agent",
+    "artifacts": "Artifacts",
+    "avg": "Avg",
+    "base_url": "Base URL",
+    "backend": "Backend",
+    "chars_per_second": "Chars/sec",
+    "detail": "Detail",
+    "duration": "Duration",
+    "evidence": "Evidence",
+    "error": "Error",
+    "failed": "Failed",
+    "field": "Field",
+    "file": "File",
+    "finding": "Finding",
+    "findings": "Findings",
+    "max": "Max",
+    "metric": "Metric",
+    "metrics": "Metrics",
+    "min": "Min",
+    "model": "Model",
+    "ok": "OK",
+    "output_preview": "Output Preview",
+    "output_chars": "Output chars",
+    "output_words": "Output words",
+    "path": "Path",
+    "prioritized_recommendations": "Prioritized Recommendations",
+    "recommendations": "Recommendations",
+    "run": "Run",
+    "run_summary": "Run Summary",
+    "samples": "Samples",
+    "severity": "Severity",
+    "status": "Status",
+    "throughput": "Throughput",
+    "top_issue": "Top issue",
+    "value": "Value",
+    "vram_peak_ratio_percent": "Peak VRAM %",
+    "words_per_second": "Words/sec",
+    "cpu_percent": "CPU %",
+    "ram_percent": "RAM %",
+    "gpu_util_percent": "GPU %",
+    "vram_used_mb": "VRAM Used MB"
+  },
+  "findings": {
+    "backend_failed": {
+      "title": "Backend benchmark failed",
+      "detail": "The model run did not complete. Metrics were still collected until the failure."
+    },
+    "gpu_missing": {
+      "title": "NVIDIA GPU metrics could not be read",
+      "detail": "nvidia-smi may be missing, or this system may not have an NVIDIA GPU."
+    },
+    "gpu_idle": {
+      "title": "GPU appears idle",
+      "detail": "GPU average and peak utilization are low. The model may be running on CPU or not reaching the GPU."
+    },
+    "ram_pressure": {
+      "title": "RAM pressure detected",
+      "detail": "RAM usage reached a critical level. Swap/pagefile may have been involved."
+    },
+    "ram_pressure_soft": {
+      "title": "RAM usage is high",
+      "detail": "Average RAM usage is high. Larger models or longer contexts are risky."
+    },
+    "vram_bottleneck": {
+      "title": "VRAM bottleneck likely ({ratio}%)",
+      "detail": "Peak VRAM usage reached {ratio}% of total capacity."
+    },
+    "vram_high": {
+      "title": "VRAM usage is high ({ratio}%)",
+      "detail": "VRAM headroom is limited. Larger context or model size may hit the limit."
+    },
+    "cpu_inference_likely": {
+      "title": "CPU inference likely",
+      "detail": "CPU usage is meaningful while GPU usage is low or unavailable. Inference may have fallen back to CPU."
+    },
+    "no_clear_bottleneck": {
+      "title": "No clear critical bottleneck",
+      "detail": "This run did not show an obvious CPU/RAM/GPU/VRAM issue from the basic metrics."
+    }
+  },
+  "recommendations": {
+    "backend_failed": "Check that the backend service is running, the base URL/model name are correct, and the model can be loaded.",
+    "gpu_idle": "Check whether the backend loaded the model onto the GPU, driver/CUDA health, and model quantization choice.",
+    "cpu_inference_likely": "If GPU inference is expected, inspect backend logs and GPU offload behavior; if CPU inference is expected, try a smaller or more quantized model.",
+    "ram_pressure": "Try a smaller model, lower context, or more aggressive quantization; close background applications.",
+    "ram_pressure_soft": "RAM may climb on longer prompts; increase context and model size gradually.",
+    "vram_bottleneck": "Reduce context length, choose a smaller or lower-bit quantized model, and close other GPU workloads.",
+    "vram_high": "Reduce context or model size before VRAM gets too close to the limit.",
+    "no_clear_bottleneck": "Run again with longer realistic prompts; v0.3 can add baselines for comparative diagnosis."
+  },
+  "advisor": {
+    "disabled_title": "Advisor Agent is disabled",
+    "disabled_summary": "Advisor output was skipped for this run.",
+    "no_issue": {
+      "title": "No high-priority issue was selected",
+      "summary": "The diagnosis did not produce one of the tracked advisor issues, so only the diagnosis report was shown.",
+      "recommendations": [
+        "Use a longer, more realistic benchmark prompt to produce stronger diagnosis signals.",
+        "Compare multiple runs to see whether the pattern is stable.",
+        "Review the raw diagnosis findings before changing runtime settings."
+      ]
+    },
+    "templates": {
+      "cpu_avg": "Average CPU usage is {avg}%.",
+      "gpu_avg": "Average GPU usage is {avg}%.",
+      "ram_max": "RAM peaked at {max}% with an average of {avg}%.",
+      "vram_ratio_high": "Peak VRAM usage reached {ratio}% of available VRAM.",
+      "vram_ratio_low": "Peak VRAM usage stayed low at {ratio}% of available VRAM.",
+      "vram_used": "Peak VRAM allocation was {max} MB."
+    },
+    "issues": {
+      "gpu_idle": {
+        "title": "The GPU may not be used effectively.",
+        "summary": "This run looks like the model is not fully reaching the GPU path during inference.",
+        "evidence": [
+          "GPU usage stayed low during the benchmark.",
+          "VRAM usage stayed low during the benchmark."
+        ],
+        "recommendations": [
+          "Check the GPU acceleration setting in Ollama or LM Studio.",
+          "Check NVIDIA driver and CUDA health.",
+          "Run the same benchmark again while the GPU path is confirmed active."
+        ]
+      },
+      "ram_pressure": {
+        "title": "RAM pressure.",
+        "summary": "System memory usage is high enough to threaten stable inference, especially on longer prompts or larger models.",
+        "evidence": [
+          "RAM usage reached a critical level.",
+          "The current run may be close to swap or pagefile pressure."
+        ],
+        "recommendations": [
+          "Try a smaller model or a shorter context window.",
+          "Close other memory-heavy applications before rerunning the benchmark.",
+          "Repeat the benchmark with the same prompt after lowering memory pressure."
+        ]
+      },
+      "ram_pressure_soft": {
+        "title": "Rising RAM pressure.",
+        "summary": "Memory is not fully critical yet, but the run is already close enough to matter for larger workloads.",
+        "evidence": [
+          "Average RAM usage is already high.",
+          "Longer prompts or larger models may push the system into memory pressure."
+        ],
+        "recommendations": [
+          "Watch memory usage on longer prompts before scaling model size.",
+          "Reduce context length if later runs become unstable.",
+          "Keep a baseline run so later regressions are easy to spot."
+        ]
+      },
+      "vram_bottleneck": {
+        "title": "A VRAM bottleneck.",
+        "summary": "GPU memory usage is close to the hardware limit, which can block larger contexts or heavier models.",
+        "evidence": [
+          "VRAM usage reached a critical share of available GPU memory.",
+          "The current configuration leaves little headroom for larger workloads."
+        ],
+        "recommendations": [
+          "Reduce context length or batch size.",
+          "Use a smaller or more aggressively quantized model.",
+          "Repeat the benchmark after freeing GPU memory from other workloads."
+        ]
+      },
+      "vram_high": {
+        "title": "High VRAM usage.",
+        "summary": "The GPU path is active, but VRAM headroom is getting tight and larger runs may hit the limit.",
+        "evidence": [
+          "VRAM usage is already high for this benchmark.",
+          "There is limited headroom for larger prompts or models."
+        ],
+        "recommendations": [
+          "Watch VRAM usage before increasing context length.",
+          "Prefer a smaller or more efficient model if this run is only a baseline.",
+          "Repeat the same benchmark after reducing other GPU activity."
+        ]
+      },
+      "cpu_inference_likely": {
+        "title": "Likely CPU-side inference.",
+        "summary": "The run suggests the workload is leaning on CPU execution when a GPU path was probably expected.",
+        "evidence": [
+          "CPU usage is meaningful during the run.",
+          "GPU usage is low or unavailable compared with the CPU signal."
+        ],
+        "recommendations": [
+          "Check whether the model is actually configured to use GPU acceleration.",
+          "Review backend logs for GPU offload or fallback messages.",
+          "Repeat the same benchmark after confirming the runtime is using the GPU."
+        ]
+      }
+    }
+  }
+}

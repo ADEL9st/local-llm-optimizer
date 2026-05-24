@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2026-05-24T10:00:00",
+    "cpu_percent": 32.0,
+    "ram_percent": 48.0,
+    "ram_used_gb": 15.0,
+    "ram_total_gb": 32.0,
+    "gpu_util_percent": 1.0,
+    "vram_used_mb": 1024.0,
+    "vram_total_mb": 12288.0,
+    "gpu_temp_c": 36.0,
+    "gpu_power_w": 8.0
+  },
+  {
+    "timestamp": "2026-05-24T10:00:01",
+    "cpu_percent": 34.0,
+    "ram_percent": 49.0,
+    "ram_used_gb": 15.3,
+    "ram_total_gb": 32.0,
+    "gpu_util_percent": 5.0,
+    "vram_used_mb": 1100.0,
+    "vram_total_mb": 12288.0,
+    "gpu_temp_c": 36.0,
+    "gpu_power_w": 9.0
+  },
+  {
+    "timestamp": "2026-05-24T10:00:02",
+    "cpu_percent": 30.0,
+    "ram_percent": 48.5,
+    "ram_used_gb": 15.1,
+    "ram_total_gb": 32.0,
+    "gpu_util_percent": 3.0,
+    "vram_used_mb": 1050.0,
+    "vram_total_mb": 12288.0,
+    "gpu_temp_c": 36.0,
+    "gpu_power_w": 8.5
+  }
+]

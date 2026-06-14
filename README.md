@@ -276,3 +276,4 @@ python -m pytest -q
 ## License
 
 AGPL-3.0 — see [LICENSE](LICENSE)
+

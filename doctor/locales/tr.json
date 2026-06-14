@@ -1,0 +1,296 @@
+{
+  "report_title": "Local LLM Performance Doctor Raporu",
+  "messages": {
+    "starting": "Doctor benchmark başlıyor..."
+  },
+  "compare": {
+    "title": "Koşu Karşılaştırması",
+    "labels": {
+      "run_label": "Koşu",
+      "metric": "Metrik",
+      "difference": "Fark",
+      "better": "Daha iyi",
+      "tie": "~",
+      "not_available": "yok",
+      "max_tokens": "Maks token",
+      "insights_title": "Öne çıkanlar",
+      "recommendation_title": "Öneri",
+      "no_insights": "İki koşu arasında belirgin bir fark yok."
+    },
+    "metrics": {
+      "duration_seconds": "Süre (sn)",
+      "words_per_second": "Hız (kelime/sn)",
+      "chars_per_second": "Karakter/sn",
+      "cpu_avg": "CPU ort. (%)",
+      "ram_avg": "RAM ort. (%)",
+      "gpu_avg": "GPU ort. (%)",
+      "vram_used_avg_mb": "VRAM ort. (MB)",
+      "vram_peak_ratio_percent": "VRAM tepe (%)"
+    },
+    "templates": {
+      "faster": "{run} %{pct} daha hızlı ({fast} - {slow} kelime/sn).",
+      "faster_duration": "{run} %{pct} daha hızlı ({fast}sn - {slow}sn).",
+      "speed_tie": "İki koşunun hızı birbirine yakın.",
+      "less_ram": "{run} daha az RAM kullanıyor (ort. %{low} - %{high}).",
+      "gpu_busier": "{run} GPU'yu daha çok kullanıyor (ort. %{high} - %{low}).",
+      "lower_vram": "{run} daha az VRAM kullanıyor (ort. {low} MB - {high} MB).",
+      "failed_run": "{run} başarıyla tamamlanmadı; karşılaştırma sınırlı.",
+      "recommend": "Bu makine için {run} ayarını kullan.",
+      "recommend_tie": "Koşular birbirine yakın; iki ayar da bu makinede uygun."
+    }
+  },
+  "estimate": {
+    "title": "Model Uyum Tahmini",
+    "labels": {
+      "model": "Model",
+      "parameters": "Parametre",
+      "quantization": "Quantization",
+      "context": "Context",
+      "tokens": "token",
+      "bit_per_weight": "bit/ağırlık",
+      "weights": "Ağırlıklar",
+      "kv_cache": "KV cache",
+      "overhead": "Ek yük",
+      "estimated_need": "Tahmini ihtiyaç",
+      "your_vram": "VRAM'in",
+      "your_ram": "RAM'in",
+      "status_title": "Durum",
+      "suggested_title": "Öneriler",
+      "notes_title": "Notlar",
+      "unknown": "bilinmiyor",
+      "not_detected": "algılanamadı"
+    },
+    "status": {
+      "fits": "GPU'ya sığar",
+      "tight": "GPU'ya yalnızca daha kısa context ile sığar",
+      "no_fit": "GPU'ya sığmaz",
+      "unknown_vram": "GPU VRAM bilinmiyor"
+    },
+    "suggestions": {
+      "good_fit": "Bu konfigürasyon GPU'na sığmalı.",
+      "reduce_context": "Context uzunluğunu yaklaşık {target} token'a düşür.",
+      "lower_quant": "Daha düşük bit quantization kullan (örneğin q4 veya q3).",
+      "smaller_model": "Daha küçük bir model seç.",
+      "cpu_offload": "CPU/RAM offload kullan; ağırlıklar sistem RAM'ine sığıyor.",
+      "no_cpu_offload": "Sistem RAM'i de kısıtlı; daha küçük bir model daha güvenli.",
+      "run_hardware": "GPU VRAM algılanamadı; `doctor hardware` çalıştır veya --vram ver."
+    },
+    "notes": {
+      "approximate": "Tahminler yaklaşıktır; KV cache ve ek yük sezgisel hesaplanır.",
+      "moe": "Mixture-of-experts model algılandı; toplam parametre farklı olabilir. Doğruluk için --params ver."
+    }
+  },
+  "hardware": {
+    "title": "Donanım Profili",
+    "labels": {
+      "os": "İşletim Sistemi",
+      "cpu": "İşlemci",
+      "cores": "çekirdek",
+      "threads": "iş parçacığı",
+      "ram": "RAM",
+      "gpu": "Ekran Kartı",
+      "vram": "VRAM",
+      "cuda": "CUDA",
+      "driver": "Sürücü",
+      "python": "Python",
+      "available": "mevcut",
+      "not_available": "yok",
+      "none_detected": "bulunamadı",
+      "unknown": "bilinmiyor",
+      "saved_to": "Kaydedildi",
+      "notes_title": "Notlar"
+    }
+  },
+  "labels": {
+    "advisor": "Advisor Agent",
+    "artifacts": "Çıktılar",
+    "avg": "Ortalama",
+    "base_url": "Base URL",
+    "backend": "Backend",
+    "chars_per_second": "Karakter/sn",
+    "detail": "Detay",
+    "duration": "Süre",
+    "evidence": "Kanıt",
+    "error": "Hata",
+    "failed": "Başarısız",
+    "field": "Alan",
+    "file": "Dosya",
+    "finding": "Teşhis",
+    "findings": "Teşhisler",
+    "max": "Maksimum",
+    "metric": "Metrik",
+    "metrics": "Metrikler",
+    "min": "Minimum",
+    "model": "Model",
+    "ok": "Başarılı",
+    "output_preview": "Model Çıktısı Önizleme",
+    "output_chars": "Çıktı karakteri",
+    "output_words": "Çıktı kelimesi",
+    "path": "Yol",
+    "prioritized_recommendations": "Öncelikli Öneriler",
+    "recommendations": "Öneriler",
+    "run": "Koşu",
+    "run_summary": "Koşu Özeti",
+    "samples": "Örnek sayısı",
+    "severity": "Seviye",
+    "status": "Durum",
+    "throughput": "Hız",
+    "top_issue": "En önemli sorun",
+    "value": "Değer",
+    "vram_peak_ratio_percent": "VRAM tepe %",
+    "words_per_second": "Kelime/sn",
+    "cpu_percent": "CPU %",
+    "ram_percent": "RAM %",
+    "gpu_util_percent": "GPU %",
+    "vram_used_mb": "VRAM Kullanımı MB"
+  },
+  "findings": {
+    "backend_failed": {
+      "title": "Backend benchmark başarısız oldu",
+      "detail": "Model koşusu tamamlanamadı. Metrikler hata anına kadar toplandı."
+    },
+    "gpu_missing": {
+      "title": "NVIDIA GPU verisi okunamadı",
+      "detail": "nvidia-smi bulunamıyor olabilir veya sistemde NVIDIA GPU yoktur."
+    },
+    "gpu_idle": {
+      "title": "GPU düşük kullanımda görünüyor",
+      "detail": "GPU ortalaması ve zirvesi düşük. Model CPU'da çalışıyor veya iş yükü GPU'ya gitmiyor olabilir."
+    },
+    "ram_pressure": {
+      "title": "RAM baskısı tespit edildi",
+      "detail": "RAM kullanımı kritik seviyeye yaklaşmış. Swap/pagefile devreye girmiş olabilir."
+    },
+    "ram_pressure_soft": {
+      "title": "RAM kullanımı yüksek",
+      "detail": "RAM ortalaması yüksek. Daha büyük model veya daha uzun context için risk var."
+    },
+    "vram_bottleneck": {
+      "title": "VRAM darboğazı olası ({ratio}%)",
+      "detail": "VRAM tepe kullanımı toplam kapasitenin {ratio}% seviyesine çıkmış."
+    },
+    "vram_high": {
+      "title": "VRAM kullanımı yüksek ({ratio}%)",
+      "detail": "VRAM tarafında çok boşluk kalmamış. Context veya model boyutu artarsa sınıra dayanabilir."
+    },
+    "cpu_inference_likely": {
+      "title": "CPU inference olası",
+      "detail": "CPU kullanımı anlamlı seviyedeyken GPU düşük veya okunamıyor. Inference CPU'ya düşmüş olabilir."
+    },
+    "no_clear_bottleneck": {
+      "title": "Net kritik darboğaz görünmüyor",
+      "detail": "Bu koşuda temel metriklere göre belirgin bir CPU/RAM/GPU/VRAM sorunu yakalanmadı."
+    }
+  },
+  "recommendations": {
+    "backend_failed": "Backend servisinin çalıştığını, base URL/model adını ve modelin yüklenebilir olduğunu kontrol et.",
+    "gpu_idle": "Backend'in modeli GPU'ya yükleyip yüklemediğini, sürücü/CUDA durumunu ve model quantization seçimini kontrol et.",
+    "cpu_inference_likely": "GPU kullanmak istiyorsan backend loglarını ve GPU offload davranışını kontrol et; CPU inference bekleniyorsa daha küçük/quantized model dene.",
+    "ram_pressure": "Daha küçük model, daha düşük context veya daha agresif quantization dene; arka plan uygulamalarını kapat.",
+    "ram_pressure_soft": "Daha uzun promptlarda RAM kullanımı artabilir; context ve model boyutunu kontrollü büyüt.",
+    "vram_bottleneck": "Context length azalt, daha küçük veya daha düşük bit quantized model seç, aynı anda çalışan GPU işlerini kapat.",
+    "vram_high": "VRAM sınırına yaklaşmadan önce context veya model boyutunu düşürmeyi dene.",
+    "no_clear_bottleneck": "Daha uzun ve gerçekçi promptlarla tekrar koş; iki koşuyu `doctor compare` ile karşılaştırarak farkı görebilirsin."
+  },
+  "advisor": {
+    "disabled_title": "Advisor Agent kapalı",
+    "disabled_summary": "Bu koşuda advisor çıktısı atlandı.",
+    "no_issue": {
+      "title": "Yüksek öncelikli bir sorun seçilmedi",
+      "summary": "Teşhis, advisor'ın izlediği ana sorunlardan birini üretmedi. Bu yüzden sadece diagnosis raporu gösterildi.",
+      "recommendations": [
+        "Daha güçlü teşhis sinyali için daha uzun ve gerçekçi bir benchmark prompt'u kullan.",
+        "Desenin kararlı olup olmadığını görmek için birden fazla koşuyu karşılaştır.",
+        "Runtime ayarlarını değiştirmeden önce ham teşhis bulgularını gözden geçir."
+      ]
+    },
+    "templates": {
+      "cpu_avg": "Ortalama CPU kullanımı %{avg}.",
+      "gpu_avg": "Ortalama GPU kullanımı %{avg}.",
+      "ram_max": "RAM zirvede %{max}, ortalamada %{avg} seviyesine çıktı.",
+      "vram_ratio_high": "Tepe VRAM kullanımı mevcut VRAM'in %{ratio} seviyesine ulaştı.",
+      "vram_ratio_low": "Tepe VRAM kullanımı mevcut VRAM'in sadece %{ratio} seviyesinde kaldı.",
+      "vram_used": "Tepe VRAM tahsisi {max} MB oldu."
+    },
+    "issues": {
+      "gpu_idle": {
+        "title": "GPU kullanılmıyor olabilir.",
+        "summary": "Bu koşu, inference sırasında modelin GPU yoluna tam olarak ulaşmadığını düşündürüyor.",
+        "evidence": [
+          "GPU kullanımı benchmark boyunca düşük kaldı.",
+          "VRAM kullanımı benchmark boyunca düşük kaldı."
+        ],
+        "recommendations": [
+          "Ollama / LM Studio GPU acceleration ayarını kontrol et.",
+          "NVIDIA driver / CUDA durumunu kontrol et.",
+          "Aynı benchmark'ı GPU aktifken tekrar çalıştır."
+        ]
+      },
+      "ram_pressure": {
+        "title": "RAM baskısı.",
+        "summary": "Sistem belleği, özellikle daha uzun promptlarda veya daha büyük modellerde kararlı inference'i zorlayacak kadar yüksek görünüyor.",
+        "evidence": [
+          "RAM kullanımı kritik seviyeye ulaştı.",
+          "Mevcut koşu swap veya pagefile baskısına yaklaşmış olabilir."
+        ],
+        "recommendations": [
+          "Daha küçük model veya daha kısa context dene.",
+          "Benchmark'ı yeniden çalıştırmadan önce yüksek bellek kullanan uygulamaları kapat.",
+          "Bellek baskısını düşürdükten sonra aynı benchmark'ı tekrar çalıştır."
+        ]
+      },
+      "ram_pressure_soft": {
+        "title": "Artan RAM baskısı.",
+        "summary": "Bellek henüz tam kritik değil ama daha büyük iş yüklerinde sorun çıkaracak kadar yükselmiş durumda.",
+        "evidence": [
+          "Ortalama RAM kullanımı şimdiden yüksek.",
+          "Daha uzun promptlar veya daha büyük modeller bu koşuyu bellek baskısına itebilir."
+        ],
+        "recommendations": [
+          "Model boyutunu büyütmeden önce daha uzun promptlarda bellek kullanımını izle.",
+          "İleride koşular dengesizleşirse context length'i düşür.",
+          "Sonraki regresyonları görmek için baseline koşu sakla."
+        ]
+      },
+      "vram_bottleneck": {
+        "title": "VRAM darboğazı.",
+        "summary": "GPU belleği donanım sınırına yaklaşmış görünüyor; bu da daha büyük context veya daha ağır modelleri engelleyebilir.",
+        "evidence": [
+          "VRAM kullanımı mevcut GPU belleğinin kritik bir kısmına ulaştı.",
+          "Mevcut konfigürasyon daha büyük iş yükleri için çok az boşluk bırakıyor."
+        ],
+        "recommendations": [
+          "Context length veya batch size değerini düşür.",
+          "Daha küçük ya da daha agresif quantized bir model kullan.",
+          "Diğer GPU işlerini kapattıktan sonra benchmark'ı tekrar çalıştır."
+        ]
+      },
+      "vram_high": {
+        "title": "Yüksek VRAM kullanımı.",
+        "summary": "GPU yolu aktif, ama VRAM boşluğu daralmış durumda ve daha büyük koşular sınırı zorlayabilir.",
+        "evidence": [
+          "Bu benchmark için VRAM kullanımı şimdiden yüksek.",
+          "Daha büyük promptlar veya modeller için sınırlı boşluk kaldı."
+        ],
+        "recommendations": [
+          "Context length artırmadan önce VRAM kullanımını izle.",
+          "Bu koşu sadece baseline ise daha küçük veya daha verimli bir model tercih et.",
+          "Diğer GPU aktivitelerini azalttıktan sonra aynı benchmark'ı tekrar çalıştır."
+        ]
+      },
+      "cpu_inference_likely": {
+        "title": "CPU inference olasılığı.",
+        "summary": "Bu koşu, GPU beklenirken iş yükünün CPU tarafına düştüğünü düşündürüyor.",
+        "evidence": [
+          "Koşu sırasında CPU kullanımı anlamlı seviyede.",
+          "GPU sinyali CPU'ya kıyasla düşük veya okunamıyor."
+        ],
+        "recommendations": [
+          "Modelin gerçekten GPU acceleration ile çalıştığını doğrula.",
+          "Backend loglarında GPU offload veya fallback mesajlarını kontrol et.",
+          "Runtime'ın GPU kullandığını doğruladıktan sonra aynı benchmark'ı tekrar çalıştır."
+        ]
+      }
+    }
+  }
+}

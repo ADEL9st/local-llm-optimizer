@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.2",
+  "config": {
+    "backend": "mock",
+    "model": "mock-model",
+    "prompt": "Say hello",
+    "lang": "en",
+    "output_dir": "runs",
+    "sample_interval": 1.0,
+    "timeout_seconds": 30.0,
+    "advisor": {
+      "enabled": true,
+      "mode": "deterministic",
+      "language": "en"
+    }
+  },
+  "backend_result": {
+    "backend": "mock",
+    "model": "mock-model",
+    "prompt": "Say hello",
+    "success": true,
+    "duration_seconds": 0.25,
+    "output_text": "mock response",
+    "stderr": "",
+    "return_code": 0,
+    "error": null,
+    "output_words": 2,
+    "output_chars": 13,
+    "words_per_second": 8.0,
+    "chars_per_second": 52.0
+  },
+  "advisor": {
+    "enabled": true,
+    "mode": "deterministic",
+    "language": "en",
+    "issue_key": "gpu_idle",
+    "top_issue": "The most important issue is that the GPU may not be used effectively.",
+    "summary": "This run looks like the model is not fully reaching the GPU path during inference.",
+    "evidence": [
+      "Average GPU usage is 3.0%.",
+      "Peak VRAM usage stayed low at 8.5% of available VRAM."
+    ],
+    "recommendations": [
+      "Check the GPU acceleration setting in Ollama or LM Studio.",
+      "Check NVIDIA driver and CUDA health.",
+      "Run the same benchmark again while the GPU path is confirmed active."
+    ]
+  }
+}

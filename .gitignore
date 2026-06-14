@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+ENV/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Local run outputs
+logs/
+runs/
+
+# Editor files
+.vscode/
+.idea/
+
+# Environment / Credentials
+.env
+.env.*
+*.env
+
+# Local Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local scratch notes (personal brainstorming, not for the repo)
+Yeni Metin Belgesi*.txt
+
+# Version snapshot folders — kept locally as a museum, not published.
+# The repo root itself is the current published version.
+/0.6.0/
+/0.7.0/
+/0.8.0/
+/0.9.0/
+/1.0.0/
+
+# Release-notes helper files (for pasting into GitHub Releases, not for the repo)
+RELEASE_NOTES_*.md
+

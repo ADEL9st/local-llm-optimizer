@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "local-llm-performance-doctor"
+name = "local-llm-optimizer"
 version = "0.6.0"
-description = "Local LLM performance doctor for Ollama, LM Studio, and OpenAI-compatible workloads."
+description = "Local LLM optimizer for Ollama, LM Studio, and OpenAI-compatible workloads."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -18,7 +18,7 @@ dev = [
 ]
 
 [project.scripts]
-doctor = "doctor.cli:main"
+llmopt = "doctor.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["doctor*"]

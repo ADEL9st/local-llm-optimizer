@@ -12,7 +12,7 @@
 
 ## v0.5.0 - Model Fit Estimator
 
-- Added `doctor estimate --model <name> --quant <q>` to predict whether a model fits before running it.
+- Added `llmopt estimate --model <name> --quant <q>` to predict whether a model fits before running it.
 - Infers parameter count from the model name (override with `--params`); supports common quantizations.
 - Breaks down weights, KV cache, and overhead into an estimated VRAM need and compares it to detected VRAM/RAM.
 - Reports a fit status (fits / tight / does not fit) with actionable suggestions (lower quant, reduce context, CPU/RAM offload, smaller model).
@@ -22,16 +22,16 @@
 
 ## v0.4.0 - Hardware Profile
 
-- Added `doctor hardware` to detect the machine and write a `hardware.json` profile.
+- Added `llmopt hardware` to detect the machine and write a `hardware.json` profile.
 - Captures OS, CPU name and core/thread counts, total RAM, GPU name, VRAM, driver, and CUDA availability/version.
 - Reuses the NVIDIA collector's `nvidia-smi` discovery; degrades gracefully with notes when `nvidia-smi` or `psutil` is unavailable.
 - TR/EN terminal summary via locale strings.
-- Used by `doctor estimate` via `--hardware hardware.json`.
+- Used by `llmopt estimate` via `--hardware hardware.json`.
 - Added unit and CLI integration tests for the hardware profile.
 
 ## v0.3.0 - Compare Runs
 
-- Added `doctor compare <run_a> <run_b>` to compare two benchmark runs side by side.
+- Added `llmopt compare <run_a> <run_b>` to compare two benchmark runs side by side.
 - Compares duration, throughput, CPU/RAM/GPU averages, and VRAM usage from `run.json`.
 - Direction-aware per-metric diff with a "better" verdict and a tie threshold.
 - Plain-language insights (faster run, lower RAM, busier GPU) and a config recommendation.

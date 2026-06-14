@@ -1,8 +1,8 @@
-# Local LLM Performance Doctor
+# Local LLM Optimizer
 
 > This tool does not make models magically faster. It diagnoses bottlenecks and recommends better runtime settings for your hardware.
 
-> Unlike tools that only check hardware compatibility before running a model, **Local LLM Performance Doctor monitors your system during inference** and tells you exactly what's bottlenecking your performance.
+> Unlike tools that only check hardware compatibility before running a model, **Local LLM Optimizer monitors your system during inference** and tells you exactly what's bottlenecking your performance.
 
 Benchmarks local LLM runs, captures CPU / RAM / GPU / VRAM metrics in real time, and explains bottlenecks with diagnosis and advisor reports.
 
@@ -39,19 +39,19 @@ pip install -e ".[dev]"
 **Ollama:**
 
 ```bash
-doctor run --backend ollama --model llama3:latest --lang en --prompt "Explain local LLM performance in 5 steps."
+llmopt run --backend ollama --model llama3:latest --lang en --prompt "Explain local LLM performance in 5 steps."
 ```
 
 **LM Studio:**
 
 ```bash
-doctor run --backend lmstudio --model "model-id" --lang en --max-tokens 512
+llmopt run --backend lmstudio --model "model-id" --lang en --max-tokens 512
 ```
 
 **OpenAI-compatible:**
 
 ```bash
-doctor run --backend openai-compatible --base-url http://localhost:1234/v1 --model "model-id" --lang en
+llmopt run --backend openai-compatible --base-url http://localhost:1234/v1 --model "model-id" --lang en
 ```
 
 ### Compare two runs
@@ -60,7 +60,7 @@ After running benchmarks, compare any two runs side by side. Pass either a run
 directory or a `run.json` path:
 
 ```bash
-doctor compare runs/2025-05-24_13-45-00 runs/2025-05-24_14-10-00 --lang en
+llmopt compare runs/2025-05-24_13-45-00 runs/2025-05-24_14-10-00 --lang en
 ```
 
 ```
@@ -89,7 +89,7 @@ Use Run B config for this machine.
 Detect this machine's hardware and write a `hardware.json` profile:
 
 ```bash
-doctor hardware --lang en --output hardware.json
+llmopt hardware --lang en --output hardware.json
 ```
 
 ```
@@ -107,7 +107,7 @@ Saved to: hardware.json
 ```
 
 When `nvidia-smi` or `psutil` is unavailable, the missing fields are reported under
-a `Notes` section instead of failing. This profile can be reused by `doctor estimate`
+a `Notes` section instead of failing. This profile can be reused by `llmopt estimate`
 with `--hardware hardware.json`.
 
 ### Estimate model fit
@@ -115,7 +115,7 @@ with `--hardware hardware.json`.
 Predict whether a model will fit *before* you download or run it:
 
 ```bash
-doctor estimate --model qwen2.5-32b --quant q4_k_m --context 4096 --lang en
+llmopt estimate --model qwen2.5-32b --quant q4_k_m --context 4096 --lang en
 ```
 
 ```
@@ -181,7 +181,7 @@ runs/
 ## Sample Output
 
 ```
-=== Local LLM Performance Doctor Report ===
+=== Local LLM Optimizer Report ===
 Model   : llama3:latest
 Backend : ollama
 Duration: 12.4s
@@ -234,7 +234,7 @@ python -m pytest -q
 - Added a backend unit test suite (mock backend remains the test fixture)
 
 ### v0.5.0
-- Added `doctor estimate` to predict model fit before running
+- Added `llmopt estimate` to predict model fit before running
 - Infers parameters from the model name; supports common quantizations
 - Breaks down weights / KV cache / overhead vs. detected VRAM and RAM
 - Fit status with suggestions: lower quant, reduce context, CPU/RAM offload, smaller model
@@ -242,14 +242,14 @@ python -m pytest -q
 - TR / EN output; estimates clearly labeled approximate
 
 ### v0.4.0
-- Added `doctor hardware` to detect hardware and write `hardware.json`
+- Added `llmopt hardware` to detect hardware and write `hardware.json`
 - Captures OS, CPU (name + cores/threads), RAM, GPU, VRAM, driver, and CUDA availability/version
 - Graceful notes when `nvidia-smi` or `psutil` is unavailable
 - TR / EN hardware summary
-- Used by `doctor estimate` via `--hardware hardware.json`
+- Used by `llmopt estimate` via `--hardware hardware.json`
 
 ### v0.3.0
-- Added `doctor compare` to compare two runs side by side
+- Added `llmopt compare` to compare two runs side by side
 - Per-metric diff with a "better" verdict, plain-language insights, and a config recommendation
 - TR / EN comparison output
 - Accepts a run directory or a `run.json` path

@@ -18,8 +18,8 @@ from doctor.core.registry import BACKEND_NAMES
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="doctor",
-        description="Local LLM Performance Doctor",
+        prog="llmopt",
+        description="Local LLM Optimizer",
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 
